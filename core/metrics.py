@@ -1,7 +1,5 @@
-"""Pass@k / Seq@k and the trajectory-shape stats, computed from a results file.
-
-Reading-only: never re-runs models. One results file holds one metric (pass@k or
-seq@k), so a comparison is just summarizing two files.
+"""pass@k / seq@k curves plus ΔSeq@K/EGS/LGS, from a results file. Read-only —
+never re-runs models; one metric per file, so comparing two runs is two files.
 """
 
 from __future__ import annotations
@@ -10,7 +8,7 @@ from core import results
 
 
 def _cumulative_best_by_attempt(traj, k):
-    """Best score achieved by attempt index t (0..k-1), carried forward."""
+    """Best score by attempt t, carried forward."""
     best, curve = 0.0, []
     steps = traj["steps"]
     for t in range(k):

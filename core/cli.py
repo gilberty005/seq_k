@@ -1,14 +1,10 @@
-"""seq_k command line: run | inspect | metrics.
+"""CLI: run | inspect | metrics.
 
     python -m core run     benchmarks/clbench/variants/seqk.raw.yaml
     python -m core inspect runs/clbench.seqk.raw --task <id>
     python -m core metrics runs/clbench.seqk.raw --k 5
 
-No registry: a run config lives inside its benchmark folder
-(benchmarks/<name>/variants/<x>.yaml), and the benchmark is inferred from that
-path. An explicit `benchmark:` key in the YAML overrides the inference. A bad
-name raises ImportError; a missing or misspelled config key raises from run(...).
-Nothing is silently defaulted.
+The benchmark comes from the config's path, or an explicit `benchmark:` key.
 """
 
 from __future__ import annotations
@@ -24,11 +20,8 @@ from core import harness, metrics, results
 
 
 def _benchmark_module(config_path, cfg):
-    """Resolve which benchmarks.* module a config belongs to.
-
-    Explicit wins: a `benchmark:` key names it (e.g. `clbench`). Otherwise infer
-    from the path: benchmarks/<name>/variants/<x>.yaml -> benchmarks.<name>.
-    """
+    """benchmarks.* module for a config: explicit `benchmark:` key wins, else
+    inferred from benchmarks/<name>/variants/<x>.yaml."""
     name = cfg.pop("benchmark", None)
     if name:
         return "benchmarks." + name

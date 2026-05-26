@@ -1,11 +1,8 @@
-"""Prompt text for CLBench DKR: the rubric judge and the two LLM critics.
-
-Ported verbatim (trimmed) from the original seq_k_eval CLBench adapter and its
-clbench_feedback.yaml. `.format()` placeholders:
-  JUDGE     : {rubrics_text}, {model_output}
-  SOCRATIC  : {rubrics_text}, {failed_requirement_count}, {requirement_status}, {raw_output}
+"""Judge + critic prompt text. .format() placeholders:
+  JUDGE     : rubrics_text, model_output
+  SOCRATIC  : rubrics_text, failed_requirement_count, requirement_status, raw_output
   DIRECTIVE : same as SOCRATIC
-(The literal JSON braces in JUDGE are doubled `{{ }}` so .format leaves them alone.)
+JSON braces in JUDGE are doubled {{ }} so .format leaves them alone.
 """
 
 JUDGE = """Starting now, you are a rigorous instruction-following grading teacher. \

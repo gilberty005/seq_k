@@ -1,9 +1,7 @@
-"""The five small data types every other module speaks.
+"""Data types shared across modules.
 
-Leak-safety convention: the prompt builder (harness.build_prompt) reads only
-`Task.prompt`, prior `Attempt.output`, and prior feedback strings. It must never
-read `Task.grading` or `VerifierResult.private` — those are for the verifier and
-the feedback function only.
+Leak-safety: build_prompt only ever reads Task.prompt and prior outputs/feedback,
+never Task.grading or VerifierResult.private (those are verifier/feedback only).
 """
 
 from __future__ import annotations
@@ -16,30 +14,30 @@ from typing import Optional
 class Task:
     id: str
     prompt: str            # what the model sees
-    grading: dict          # rubric / answer key — read only by verify() and feedback()
+    grading: dict          # answer key; verify()/feedback() only
 
 
 @dataclass(frozen=True)
 class Attempt:
-    index: int             # 0-based attempt number
+    index: int             # 0-based
     output: str            # raw model text
 
 
 @dataclass(frozen=True)
 class VerifierResult:
     success: bool
-    score: float                                  # 1.0 / 0.0 for binary; soft scores need no schema change
-    raw_eval_output: str                          # PUBLIC diagnostic, safe to show the next retry
-    private: dict = field(default_factory=dict)   # DEBUG / feedback-internal (judge JSON, per-rubric verdicts)
+    score: float                                  # 1/0 today; float leaves room for soft scores
+    raw_eval_output: str                          # safe to show the next attempt
+    private: dict = field(default_factory=dict)   # verifier/feedback scratch (judge json, prompts, verdicts)
 
 
 @dataclass
 class Step:
     attempt_index: int
-    prompt: str                    # the EXACT text shown to the model this attempt
+    prompt: str                    # exact text the model saw
     output: str
     result: VerifierResult
-    feedback: Optional[str]        # produced after this attempt (None if it passed, was the last, or pass@k)
+    feedback: Optional[str]        # None if passed / last attempt / pass@k
 
 
 @dataclass
@@ -48,6 +46,7 @@ class Trajectory:
     metric: str                    # "pass@k" | "seq@k"
     model: str
     feedback_mode: str
+    task_prompt: str               # shared actor context, kept once so the prompt view can show deltas
     steps: list
     success: bool
     best_score: float

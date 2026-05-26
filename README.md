@@ -67,8 +67,8 @@ A run writes one folder, `runs/<name>/`, with three files:
 
 - `full.json` — every trajectory in full (prompts, outputs, grading).
 - `results.json` — scores and per-rubric verdicts only, no prompts.
-- `prompts.txt` — each agent's exact prompt at every step (`ACTOR` / `JUDGE` /
-  `CRITIC`), labelled for leakage review.
+- `prompts.md` — prompt review: the shared actor context once per task, then each
+  attempt's injected delta, with the judge/critic prompts folded into `<details>`.
 
 `inspect` and `metrics` take the run folder (or its `full.json`).
 

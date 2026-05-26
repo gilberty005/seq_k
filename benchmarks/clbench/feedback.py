@@ -1,14 +1,11 @@
-"""Feedback for CLBench — every mode lives here, next to the verifier.
+"""CLBench feedback modes:
+    binary    — pass/fail bit only
+    raw       — verifier's public diagnostic verbatim
+    socratic  — LLM critic, guiding questions
+    directive — LLM critic, names what to fix
 
-Modes:
-    binary    — just the pass/fail bit, no detail.
-    raw       — the verifier's public diagnostic verbatim (per-rubric verdicts).
-    socratic  — rubric-aware LLM critic that asks guiding questions.
-    directive — rubric-aware LLM critic that names what to fix.
-
-The socratic/directive critics read the rubric internally but are instructed (in
-prompts.py) not to leak its exact text. pass@k never calls this — it is
-feedback-blind.
+socratic/directive see the rubric but are told not to leak it (prompts.py).
+pass@k never calls this.
 """
 
 from __future__ import annotations

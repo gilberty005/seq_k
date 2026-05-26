@@ -1,19 +1,19 @@
-"""Each run writes one folder, `runs/<name>/`, holding three files:
+"""Each run writes a folder runs/<name>/ with three files:
 
-    full.json     every trajectory in full — prompts, outputs, grading
-    results.json  scores and per-rubric verdicts only (no prompts)
-    prompts.txt   each agent's exact prompt at every step, labelled ACTOR /
-                  JUDGE / CRITIC, for reviewing what each model could see
+    full.json     full trajectories (prompts, outputs, grading)
+    results.json  scores + per-rubric verdicts, no prompts
+    prompts.md    per-step prompt review: the shared actor context once, then each
+                  attempt's injected delta, with judge/critic prompts folded away
 
-All three are rewritten after each task and swapped in atomically, so a crash
-leaves a valid folder with every finished task. `load`, `inspect`, and `metrics`
-read full.json — pass them either the run folder or the file directly.
+Rewritten per task and swapped in atomically. load/inspect/metrics take the run
+folder or its full.json.
 """
 
 from __future__ import annotations
 
 import json
 import os
+import re
 from dataclasses import asdict
 
 
@@ -24,18 +24,18 @@ def save(traj, out):
     trajs.append(asdict(traj))
     _write(full, _json(trajs))
     _write(os.path.join(out, "results.json"), _json(_results_view(trajs)))
-    _write(os.path.join(out, "prompts.txt"), _prompts_view(trajs))
+    _write(os.path.join(out, "prompts.md"), _prompts_md(trajs))
 
 
 def load(out):
-    """Read every trajectory as dicts. `out` is the run folder or its full.json."""
+    """Trajectories as dicts; `out` is the run folder or its full.json."""
     path = os.path.join(out, "full.json") if os.path.isdir(out) else out
     with open(path, encoding="utf-8") as f:
         return json.load(f)
 
 
 def inspect(out, task_id):
-    """Reprint one saved trajectory, step by step, in full (no truncation)."""
+    """Reprint one trajectory step by step, untruncated."""
     for traj in load(out):
         if traj["task_id"] == task_id:
             print(f"task {traj['task_id']} | metric={traj['metric']} | model={traj['model']} "
@@ -76,22 +76,41 @@ def _results_view(trajs):
     ]
 
 
-def _prompts_view(trajs):
+def _prompts_md(trajs):
     out = []
     for t in trajs:
-        out += ["=" * 72,
-                f"TASK {t['task_id']}  |  metric={t['metric']}  |  feedback={t['feedback_mode']}",
-                "=" * 72]
+        verdict = "PASS" if t["success"] else "FAIL"
+        out.append(f"# TASK {t['task_id']} — {t['metric']} / {t['feedback_mode']} — {verdict} (best {t['best_score']})\n")
+        base = t.get("task_prompt") or ""
+        if base:
+            out.append(_fold(f"Shared actor context — sent every attempt ({len(base)} chars)", base))
         for s in t["steps"]:
-            priv = s["result"].get("private") or {}
-            out += [f"\n{'-' * 72}", f"ATTEMPT {s['attempt_index'] + 1}", "-" * 72]
-            out.append(f"\n[ACTOR PROMPT]  (shown to the model being evaluated: {t['model']})\n\n{s['prompt']}")
+            r = s["result"]
+            priv = r.get("private") or {}
+            failed = [i + 1 for i, v in enumerate(priv.get("requirement_status") or []) if v == "no"]
+            mark = "PASS" if r["success"] else "FAIL"
+            out.append(f"## Attempt {s['attempt_index'] + 1} — {mark}" + (f" (failed: {failed})" if failed else ""))
+            delta = s["prompt"]
+            if base and delta.startswith(base):
+                delta = delta[len(base):].lstrip("\n")
+            out.append("**Actor delta** — added to the shared context:")
+            out.append(_block(delta or "(shared context only)"))
             if priv.get("judge_prompt"):
-                out.append(f"\n[JUDGE PROMPT]  (shown to the grader)\n\n{priv['judge_prompt']}")
+                out.append(_fold("Judge prompt", priv["judge_prompt"]))
             if priv.get("critic_prompt"):
-                out.append(f"\n[CRITIC PROMPT — {t['feedback_mode']}]  (shown to the feedback model)\n\n{priv['critic_prompt']}")
+                out.append(_fold(f"Critic prompt ({t['feedback_mode']})", priv["critic_prompt"]))
         out.append("")
     return "\n".join(out)
+
+
+def _block(text):
+    longest = max((len(m) for m in re.findall(r"`+", text)), default=0)
+    fence = "`" * max(3, longest + 1)   # outlast any backticks in the body
+    return f"{fence}\n{text}\n{fence}"
+
+
+def _fold(summary, text):
+    return f"<details><summary>{summary}</summary>\n\n{_block(text)}\n\n</details>\n"
 
 
 def _json(obj):

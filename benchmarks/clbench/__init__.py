@@ -1,11 +1,5 @@
-"""CLBench benchmark — self-contained: task loading, verifier, and feedback.
-
-A benchmark exposes exactly three functions; the harness calls these and nothing
-else:
-    load_tasks() -> list[Task]
-    verify(task, attempt, *, judge_model) -> VerifierResult
-    feedback(task, attempt, result, mode, *, judge_model) -> str
-"""
+"""CLBench — self-contained benchmark. Exposes the three functions the harness
+calls: load_tasks, verify, feedback."""
 
 from .benchmark import load_tasks, verify
 from .feedback import feedback

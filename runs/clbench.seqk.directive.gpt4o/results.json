@@ -4,8 +4,8 @@
     "metric": "seq@k",
     "model": "openai/gpt-4o",
     "feedback_mode": "directive",
-    "success": false,
-    "best_score": 0.0,
+    "success": true,
+    "best_score": 1.0,
     "attempts": [
       {
         "attempt": 1,
@@ -13,10 +13,10 @@
         "score": 0.0,
         "requirement_status": [
           "yes",
-          "yes",
-          "yes",
-          "yes",
           "no",
+          "yes",
+          "yes",
+          "yes",
           "yes"
         ],
         "failed_requirement_count": 1,
@@ -29,12 +29,12 @@
         "requirement_status": [
           "yes",
           "yes",
-          "no",
           "yes",
-          "no",
+          "yes",
+          "yes",
           "no"
         ],
-        "failed_requirement_count": 3,
+        "failed_requirement_count": 1,
         "total_requirements": 6
       },
       {
@@ -47,28 +47,13 @@
           "yes",
           "yes",
           "yes",
-          "no"
+          "yes"
         ],
-        "failed_requirement_count": 2,
+        "failed_requirement_count": 1,
         "total_requirements": 6
       },
       {
         "attempt": 4,
-        "success": false,
-        "score": 0.0,
-        "requirement_status": [
-          "yes",
-          "no",
-          "no",
-          "yes",
-          "yes",
-          "yes"
-        ],
-        "failed_requirement_count": 2,
-        "total_requirements": 6
-      },
-      {
-        "attempt": 5,
         "success": false,
         "score": 0.0,
         "requirement_status": [
@@ -80,6 +65,21 @@
           "yes"
         ],
         "failed_requirement_count": 1,
+        "total_requirements": 6
+      },
+      {
+        "attempt": 5,
+        "success": true,
+        "score": 1.0,
+        "requirement_status": [
+          "yes",
+          "yes",
+          "yes",
+          "yes",
+          "yes",
+          "yes"
+        ],
+        "failed_requirement_count": 0,
         "total_requirements": 6
       }
     ]
@@ -97,20 +97,20 @@
         "success": false,
         "score": 0.0,
         "requirement_status": [
-          "yes",
-          "no",
-          "yes",
-          "no",
-          "yes",
           "no",
           "no",
-          "yes",
+          "no",
+          "no",
+          "no",
+          "no",
+          "no",
+          "no",
           "no",
           "no",
           "no",
           "no"
         ],
-        "failed_requirement_count": 8,
+        "failed_requirement_count": 12,
         "total_requirements": 12
       },
       {
@@ -118,20 +118,20 @@
         "success": false,
         "score": 0.0,
         "requirement_status": [
-          "yes",
-          "no",
-          "yes",
-          "no",
-          "yes",
           "no",
           "no",
+          "no",
+          "no",
+          "no",
+          "no",
+          "no",
           "yes",
           "yes",
           "no",
-          "yes",
+          "no",
           "no"
         ],
-        "failed_requirement_count": 6,
+        "failed_requirement_count": 10,
         "total_requirements": 12
       },
       {
@@ -139,20 +139,20 @@
         "success": false,
         "score": 0.0,
         "requirement_status": [
+          "no",
           "yes",
-          "yes",
+          "no",
+          "no",
           "yes",
           "yes",
           "no",
           "yes",
-          "no",
           "yes",
           "no",
-          "yes",
           "no",
           "no"
         ],
-        "failed_requirement_count": 5,
+        "failed_requirement_count": 7,
         "total_requirements": 12
       },
       {
@@ -160,20 +160,20 @@
         "success": false,
         "score": 0.0,
         "requirement_status": [
+          "no",
           "yes",
+          "no",
+          "no",
+          "no",
           "yes",
           "yes",
           "yes",
           "yes",
           "no",
-          "no",
-          "yes",
-          "no",
-          "yes",
           "no",
           "no"
         ],
-        "failed_requirement_count": 5,
+        "failed_requirement_count": 7,
         "total_requirements": 12
       },
       {
@@ -182,19 +182,19 @@
         "score": 0.0,
         "requirement_status": [
           "no",
-          "yes",
           "no",
           "no",
+          "no",
           "yes",
           "yes",
           "yes",
-          "yes",
+          "no",
           "yes",
           "no",
           "no",
           "no"
         ],
-        "failed_requirement_count": 6,
+        "failed_requirement_count": 8,
         "total_requirements": 12
       }
     ]

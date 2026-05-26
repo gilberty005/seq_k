@@ -28,8 +28,8 @@
         "score": 0.0,
         "requirement_status": [
           "yes",
-          "yes",
           "no",
+          "yes",
           "yes",
           "yes",
           "yes"
@@ -43,10 +43,10 @@
         "score": 0.0,
         "requirement_status": [
           "yes",
+          "yes",
+          "yes",
+          "yes",
           "no",
-          "yes",
-          "yes",
-          "yes",
           "yes"
         ],
         "failed_requirement_count": 1,
@@ -120,9 +120,9 @@
         "requirement_status": [
           "yes",
           "no",
+          "yes",
           "no",
-          "no",
-          "no",
+          "yes",
           "no",
           "no",
           "yes",
@@ -131,7 +131,7 @@
           "no",
           "no"
         ],
-        "failed_requirement_count": 10,
+        "failed_requirement_count": 8,
         "total_requirements": 12
       },
       {
@@ -139,9 +139,9 @@
         "success": false,
         "score": 0.0,
         "requirement_status": [
-          "no",
           "yes",
           "no",
+          "yes",
           "no",
           "no",
           "no",
@@ -152,7 +152,7 @@
           "no",
           "no"
         ],
-        "failed_requirement_count": 10,
+        "failed_requirement_count": 9,
         "total_requirements": 12
       },
       {
@@ -165,7 +165,28 @@
           "no",
           "no",
           "no",
+          "no",
+          "no",
+          "no",
+          "no",
+          "no",
           "yes",
+          "no"
+        ],
+        "failed_requirement_count": 10,
+        "total_requirements": 12
+      },
+      {
+        "attempt": 5,
+        "success": false,
+        "score": 0.0,
+        "requirement_status": [
+          "yes",
+          "no",
+          "yes",
+          "no",
+          "no",
+          "no",
           "no",
           "yes",
           "no",
@@ -174,27 +195,6 @@
           "no"
         ],
         "failed_requirement_count": 9,
-        "total_requirements": 12
-      },
-      {
-        "attempt": 5,
-        "success": false,
-        "score": 0.0,
-        "requirement_status": [
-          "no",
-          "no",
-          "no",
-          "no",
-          "no",
-          "no",
-          "no",
-          "yes",
-          "no",
-          "no",
-          "no",
-          "no"
-        ],
-        "failed_requirement_count": 11,
         "total_requirements": 12
       }
     ]

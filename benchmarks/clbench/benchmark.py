@@ -1,8 +1,7 @@
-"""CLBench: task loading + rubric-judge verifier.
+"""CLBench task loading + rubric-judge verifier.
 
-Loads the Domain Knowledge Reasoning slice of CL-bench and is fail-loud: a judge
-response that does not parse raises a ValueError (with the raw judge text) rather
-than defaulting to a score of 0.
+Domain Knowledge Reasoning slice of CL-bench. An unparseable judge response raises
+(with the raw text) instead of silently scoring 0.
 """
 
 from __future__ import annotations
@@ -113,7 +112,7 @@ def verify(task, attempt, *, judge_model):
 
 
 def _parse_judge(raw):
-    """Strict parse of the judge JSON. Raises (fail-loud) if it can't be read."""
+    """Parse the judge JSON; raise if it can't be read."""
     payload = json.loads(extract_json_text(strip_code_fence(raw)))
     if not isinstance(payload, dict):
         raise ValueError(f"judge did not return a JSON object:\n{raw}")
